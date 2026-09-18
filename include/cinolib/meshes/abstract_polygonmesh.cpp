@@ -218,40 +218,43 @@ void AbstractPolygonMesh<M,V,E,P>::init(      std::vector<vec3d>             & p
     // cut mesh along seams to create unique openGL-like vertices having
     // xyz, uvw and normals all condensed in a single entity
     //
-    if (poly_pos.size() == poly_tex.size() &&
-        poly_pos.size() == poly_nor.size())
+    if(poly_pos.size()>0)
     {
-        std::vector<vec3d> tmp_xyz, tmp_uvw, tmp_nor;
-        std::vector<std::vector<uint>> tmp_poly;
-        to_openGL_unified_verts(pos, tex, nor, poly_pos, poly_tex, poly_nor, tmp_xyz, tmp_uvw, tmp_nor, tmp_poly);
-        pos      = tmp_xyz;
-        tex      = tmp_uvw;
-        nor      = tmp_nor;
-        poly_pos = tmp_poly;
-    }
-    else if (poly_pos.size() == poly_tex.size())
-    {
-        std::vector<vec3d> tmp_xyz, tmp_uvw;
-        std::vector<std::vector<uint>> tmp_poly;
-        to_openGL_unified_verts(pos, tex, poly_pos, poly_tex, tmp_xyz, tmp_uvw, tmp_poly);
-        pos      = tmp_xyz;
-        tex      = tmp_uvw;
-        poly_pos = tmp_poly;
-    }
-    else if (poly_pos.size() == poly_nor.size())
-    {
-        std::vector<vec3d> tmp_xyz, tmp_nor;
-        std::vector<std::vector<uint>> tmp_poly;
-        to_openGL_unified_verts(pos, nor, poly_pos, poly_nor, tmp_xyz, tmp_nor, tmp_poly);
-        pos      = tmp_xyz;
-        nor      = tmp_nor;
-        poly_pos = tmp_poly;
+        if (poly_pos.size() == poly_tex.size() &&
+            poly_pos.size() == poly_nor.size())
+        {
+            std::vector<vec3d> tmp_xyz, tmp_uvw, tmp_nor;
+            std::vector<std::vector<uint>> tmp_poly;
+            to_openGL_unified_verts(pos, tex, nor, poly_pos, poly_tex, poly_nor, tmp_xyz, tmp_uvw, tmp_nor, tmp_poly);
+            pos      = tmp_xyz;
+            tex      = tmp_uvw;
+            nor      = tmp_nor;
+            poly_pos = tmp_poly;
+        }
+        else if (poly_pos.size() == poly_tex.size())
+        {
+            std::vector<vec3d> tmp_xyz, tmp_uvw;
+            std::vector<std::vector<uint>> tmp_poly;
+            to_openGL_unified_verts(pos, tex, poly_pos, poly_tex, tmp_xyz, tmp_uvw, tmp_poly);
+            pos      = tmp_xyz;
+            tex      = tmp_uvw;
+            poly_pos = tmp_poly;
+        }
+        else if (poly_pos.size() == poly_nor.size())
+        {
+            std::vector<vec3d> tmp_xyz, tmp_nor;
+            std::vector<std::vector<uint>> tmp_poly;
+            to_openGL_unified_verts(pos, nor, poly_pos, poly_nor, tmp_xyz, tmp_nor, tmp_poly);
+            pos      = tmp_xyz;
+            nor      = tmp_nor;
+            poly_pos = tmp_poly;
+        }
     }
 
     init(pos, poly_pos);
 
     // customize uv(w) coordinates
-    if(pos.size()==tex.size())
+    if(poly_pos.size()>0 && pos.size()==tex.size())
     {
         std::cout << "load textures" << std::endl;
         for(uint vid=0; vid<this->num_verts(); ++vid)
@@ -272,7 +275,7 @@ void AbstractPolygonMesh<M,V,E,P>::init(      std::vector<vec3d>             & p
     }
 
     // customize colors
-    if(poly_col.size()==this->num_polys())
+    if(poly_pos.size()>0 && poly_col.size()==this->num_polys())
     {
         std::cout << "load per polygon colors" << std::endl;
         for(uint pid=0; pid<this->num_polys(); ++pid)
@@ -281,7 +284,7 @@ void AbstractPolygonMesh<M,V,E,P>::init(      std::vector<vec3d>             & p
         }
     }
 
-    if(poly_lab.size()==this->num_polys())
+    if(poly_pos.size()>0 && poly_lab.size()==this->num_polys())
     {
         this->poly_apply_labels(poly_lab);
     }

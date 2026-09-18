@@ -209,7 +209,7 @@ void Octree::subdivide(OctreeNode * node)
 
     for(uint it : node->item_indices)
     {
-        bool orphan = true;
+        [[maybe_unused]] bool orphan = true;
         for(int i=0; i<8; ++i)
         {
             assert(node->children[i]!=nullptr);

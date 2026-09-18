@@ -572,7 +572,7 @@ void AbstractMesh<M,V,E,P>::vert_weights(const uint vid, const int type, std::ve
 
 template<class M, class V, class E, class P>
 CINO_INLINE
-double AbstractMesh<M,V,E,P>::edge_weight(const uint eid, const int type) const
+double AbstractMesh<M,V,E,P>::edge_weight(const uint, const int type) const
 {
     switch (type)
     {

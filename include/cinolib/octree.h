@@ -234,7 +234,7 @@ class Octree
             double      dist  = inf_double;
             OctreeNode *node  = nullptr;
             int         index = -1; // note: this is the item ID, NOT necessarily the index of vector items!!
-            vec3d       pos;        // closest point
+            vec3d       pos = vec3d(0.,0.,0.);        // closest point
         };
         struct Greater
         {
